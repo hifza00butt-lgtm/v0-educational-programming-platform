@@ -12,8 +12,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'CodeLearn - Learn Programming Online',
-  description: 'Master programming with interactive lessons in Python, JavaScript, and HTML. Start your coding journey today!',
+  title: 'CodeLearn - Learn to Code',
+  description: 'Learn Python, JavaScript, and HTML with interactive lessons',
 }
 
 export default function RootLayout({
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className="font-sans antialiased bg-background text-foreground">
+    <html lang="en">
+      <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

@@ -1,138 +1,109 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { supabase, type Language } from '@/lib/supabase'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
+const languages = [
+  {
+    id: 'python',
+    name: 'Python',
+    icon: '🐍',
+    description: 'Learn the versatile language used for web development, data science, and automation.',
+  },
+  {
+    id: 'javascript',
+    name: 'JavaScript',
+    icon: '✨',
+    description: 'Master the language that powers interactive websites and modern web applications.',
+  },
+  {
+    id: 'html',
+    name: 'HTML',
+    icon: '🏗️',
+    description: 'Build beautiful web pages with HTML, the foundation of all web development.',
+  },
+]
 
 export default function Home() {
-  const [languages, setLanguages] = useState<Language[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-
-  useEffect(() => {
-    const fetchLanguages = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('languages')
-          .select('*')
-          .order('created_at', { ascending: true })
-
-        if (error) throw error
-        setLanguages(data || [])
-      } catch (error) {
-        console.error('Error fetching languages:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchLanguages()
-  }, [])
-
-  const filteredLanguages = languages.filter(lang =>
-    lang.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    lang.description.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-muted">
+    <div className="min-h-screen bg-slate-900">
       {/* Header */}
-      <header className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                CodeLearn
-              </div>
-            </div>
-            <nav className="hidden md:flex gap-6">
-              <Link href="#" className="text-sm font-medium hover:text-primary transition">
-                Courses
-              </Link>
-              <Link href="#" className="text-sm font-medium hover:text-primary transition">
-                About
-              </Link>
-              <Link href="#" className="text-sm font-medium hover:text-primary transition">
-                Contact
-              </Link>
-            </nav>
-          </div>
+      <header className="bg-slate-800 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <h1 className="text-3xl font-bold text-white">CodeLearn</h1>
+          <p className="text-slate-400 mt-1">Learn to code with interactive lessons</p>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-balance mb-4">
-            Learn Programming the Right Way
-          </h1>
-          <p className="text-lg text-muted-foreground text-balance mb-8 max-w-2xl mx-auto">
-            Start your coding journey with interactive lessons in Python, JavaScript, and HTML. Perfect for beginners!
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-bold text-white mb-6">Start Learning Today</h2>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+            Master programming with comprehensive, beginner-friendly lessons in Python, JavaScript, and HTML.
+            Start from the basics and progress at your own pace.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
-              Start Learning
-            </Button>
-            <Button variant="outline" size="lg">
-              Learn More
-            </Button>
+        </div>
+
+        {/* Language Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {languages.map((lang) => (
+            <Link key={lang.id} href={`/learn/${lang.id}`}>
+              <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer h-full group">
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">{lang.icon}</div>
+                <h3 className="text-2xl font-bold text-white mb-3">{lang.name}</h3>
+                <p className="text-slate-300 mb-6">{lang.description}</p>
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200">
+                  Start Learning
+                </button>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Features Section */}
+        <div className="bg-slate-800 rounded-lg p-12 border border-slate-700 mb-16">
+          <h3 className="text-3xl font-bold text-white mb-8 text-center">Why Choose CodeLearn?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-5xl mb-4">📚</div>
+              <h4 className="text-xl font-bold text-white mb-2">Comprehensive Content</h4>
+              <p className="text-slate-300">From basics to advanced topics, learn everything you need to become a skilled programmer.</p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl mb-4">💻</div>
+              <h4 className="text-xl font-bold text-white mb-2">Code Examples</h4>
+              <p className="text-slate-300">Every lesson includes practical, real-world code examples that you can understand and apply.</p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl mb-4">🎯</div>
+              <h4 className="text-xl font-bold text-white mb-2">Beginner Friendly</h4>
+              <p className="text-slate-300">No prior experience needed. Clear explanations make learning easy for everyone.</p>
+            </div>
           </div>
         </div>
 
-        {/* Search Section */}
-        <div className="max-w-md mx-auto mb-12">
-          <div className="relative">
-            <Input
-              placeholder="Search languages..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-4 pr-4 py-2 rounded-lg border border-input"
-            />
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
+            <p className="text-4xl font-bold text-blue-400 mb-2">30+</p>
+            <p className="text-slate-300">Lessons</p>
+          </div>
+          <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
+            <p className="text-4xl font-bold text-blue-400 mb-2">3</p>
+            <p className="text-slate-300">Programming Languages</p>
+          </div>
+          <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
+            <p className="text-4xl font-bold text-blue-400 mb-2">100%</p>
+            <p className="text-slate-300">Free Forever</p>
           </div>
         </div>
-
-        {/* Languages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loading ? (
-            <div className="col-span-full text-center py-12">
-              <p className="text-muted-foreground">Loading courses...</p>
-            </div>
-          ) : filteredLanguages.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <p className="text-muted-foreground">No courses found matching your search.</p>
-            </div>
-          ) : (
-            filteredLanguages.map((language) => (
-              <Link key={language.id} href={`/learn/${language.id}`}>
-                <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer border-border hover:border-primary/50">
-                  <CardHeader>
-                    <div className="text-4xl mb-2">{language.icon}</div>
-                    <CardTitle>{language.name}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {language.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button className="w-full" variant="outline">
-                      Start Learning
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))
-          )}
-        </div>
-      </section>
+      </main>
 
       {/* Footer */}
-      <footer className="border-t border-border mt-16 py-8 bg-muted/30">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>CodeLearn © 2026. Learn to code, one lesson at a time.</p>
+      <footer className="bg-slate-800 border-t border-slate-700 mt-20 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400">
+          <p>&copy; 2026 CodeLearn. Learn to code, anywhere, anytime.</p>
         </div>
       </footer>
-    </main>
+    </div>
   )
 }
